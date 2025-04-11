@@ -3,18 +3,37 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import json
 
-app = FastAPI()
+app = FastAPI() # FastAPI instance
+
+# CORS config agar frontend bisa akses backend
+# Ganti "*" dengan domain frontend kamu kalau production
+# Misal: ["https://frontend-domain.com"]
+# Untuk development bisa pakai ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # ganti * jadi domain frontend kamu kalau production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load dummy data
 with open("dummyData.json", "r") as f:
     DUMMY_DATA = json.load(f)
 
-@app.get("/api/data")
+@app.get("/api/sales-reps")
 def get_data():
     """
     Returns dummy data (e.g., list of users).
     """
     return DUMMY_DATA
+
+@app.get("/api/tes")
+def get_data():
+    """
+    Returns dummy data (e.g., list of users).
+    """
+    return "Hello, this is a test endpoint!"
 
 @app.post("/api/ai")
 async def ai_endpoint(request: Request):
