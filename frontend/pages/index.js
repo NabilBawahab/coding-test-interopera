@@ -6,6 +6,8 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
+  Textarea,
 } from "@heroui/react";
 import { useState, useEffect } from "react";
 
@@ -18,6 +20,7 @@ export default function Home() {
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(null);
   const [selectedSalesReps, setSelectedSalesReps] = useState(null);
+  const [loadingAI, setloadingAI] = useState(false);
 
   useEffect(() => {
     async function fetchSalesReps() {
@@ -54,16 +57,39 @@ export default function Home() {
   };
 
   const handleAskQuestion = async () => {
+    setloadingAI(true);
     try {
       const response = await fetch("http://localhost:8000/api/ai", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        headers: { "Content-Type": "application/json" }, //tipe konten application/json kalau xml application/xml dll (metadata)
+        body: JSON.stringify({ question: question }), //Data yang mau dikirim
       });
+
+      // Handle error ketika response 400/500
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || "Failed to fetch AI response");
+        setAnswer("");
+        setloadingAI(false);
+        return;
+      }
+
+      // Handle Error ketika response 200 tapi data object mengandung error
       const data = await response.json();
+      if (data.error != null) {
+        setAnswer(data.error);
+        setloadingAI(false);
+        return;
+      }
+      console.log("data", data);
       setAnswer(data.answer);
+      setError(null);
+      setloadingAI(false);
     } catch (error) {
       console.error("Error in AI request:", error);
+      setError("Failed to fetch AI response");
+      setAnswer("");
+      setloadingAI(false);
     }
   };
 
@@ -225,16 +251,18 @@ export default function Home() {
       <section>
         <h2>Ask a Question (AI Endpoint)</h2>
         <div>
-          <input
+          <Input
             type="text"
             placeholder="Enter your question..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-          />
-          <button onClick={handleAskQuestion}>Ask</button>
+          ></Input>
+          <Button isLoading={loadingAI} onPress={handleAskQuestion}>
+            Ask
+          </Button>
         </div>
         {answer && (
-          <div style={{ marginTop: "1rem" }}>
+          <div>
             <strong>AI Response:</strong> {answer}
           </div>
         )}
