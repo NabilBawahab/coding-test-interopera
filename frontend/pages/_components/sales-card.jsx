@@ -13,6 +13,7 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import { useState } from "react";
+import { EllipsisVertical } from "lucide-react";
 
 export const SalesCard = ({ salesReps }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); //Modal HERO UI
@@ -25,12 +26,12 @@ export const SalesCard = ({ salesReps }) => {
 
   const getStatusColor = (status) => {
     if (status === "Closed Won") {
-      return "text-green-500";
+      return "text-white bg-green-500 font-bold border rounded-lg px-2 py-1 w-28 text-center text-xs";
     }
     if (status === "Closed Lost") {
-      return "text-red-500";
+      return "text-white bg-red-500 font-bold border rounded-lg px-2 py-1 w-28 text-center text-xs";
     }
-    return "text-blue-500";
+    return "text-white bg-blue-500 font-bold border rounded-lg px-2 py-1 w-28 text-center text-xs";
   };
 
   //Currency format
@@ -48,27 +49,31 @@ export const SalesCard = ({ salesReps }) => {
           <Card key={rep.id}>
             <CardHeader>
               <div>
-                <strong>{rep.name}</strong>
-                <p>{rep.role}</p>
+                <strong className="text-blue-500">{rep.name}</strong>
+                <p className="text-slate-700">{rep.role}</p>
               </div>
             </CardHeader>
             <CardBody className="flex justify-center">
               <Image
                 width={270}
                 className="object-cover w-full"
-                src="https://mighty.tools/mockmind-api/content/human/124.jpg"
+                src="/blankprofile.png"
               />
             </CardBody>
             <CardFooter className="flex justify-end">
               <Button
+                isIconOnly
+                size="sm"
+                radius="lg"
                 type="button"
-                variant="ghost"
+                variant="light"
+                color="primary"
                 onPress={() => {
                   handleShowDetail(rep);
                   onOpen();
                 }}
               >
-                Details
+                <EllipsisVertical size={20} />
               </Button>
             </CardFooter>
           </Card>
@@ -116,11 +121,11 @@ export const SalesCard = ({ salesReps }) => {
                               {deal.client}, <strong>Value: </strong>{" "}
                               {formattedValue}
                             </div>
-                            <div>
+                            <div className="flex space-x-2 items-center">
                               <strong>Status: </strong>
-                              <span className={getStatusColor(deal.status)}>
+                              <div className={getStatusColor(deal.status)}>
                                 {deal.status}
-                              </span>
+                              </div>
                             </div>
                           </li>
                         );

@@ -1,9 +1,6 @@
 import { Card, Skeleton } from "@heroui/react";
 
 export const SalesCardSkeleton = () => {
-  const test = "foobar";
-  console.log(test);
-
   return (
     <>
       <Card className="w-[200px] space-y-5 p-4" radius="lg">
