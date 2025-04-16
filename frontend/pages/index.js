@@ -1,32 +1,22 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Input,
-  Textarea,
-} from "@heroui/react";
 import { useState, useEffect } from "react";
+import { SalesCard } from "./_components/sales-card";
+import { SalesCardSkeleton } from "./_components/sales-card-skeleton";
+import { Headers } from "./_components/headers";
+import { DrawerAI } from "./_components/drawer-ai-answer";
 
 export default function Home() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure(); //Modal HERO UI
-
   const [salesReps, setSalesReps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState(null);
-  const [selectedSalesReps, setSelectedSalesReps] = useState(null);
   const [loadingAI, setloadingAI] = useState(false);
 
   useEffect(() => {
+    // setTimeout(() => {
     async function fetchSalesReps() {
       setLoading(true);
       setError(null);
-
       try {
         const res = await fetch("http://localhost:8000/api/sales-reps");
 
@@ -44,30 +34,22 @@ export default function Home() {
         setLoading(false);
       }
     }
-
     fetchSalesReps();
+    // }, 2000);
   }, []);
-
-  const handleShowDetail = (salesReps) => {
-    setSelectedSalesReps(salesReps);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedSalesReps(null);
-  };
 
   const handleAskQuestion = async () => {
     setloadingAI(true);
     try {
-      const response = await fetch("http://localhost:8000/api/ai", {
+      const res = await fetch("http://localhost:8000/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" }, //tipe konten application/json kalau xml application/xml dll (metadata)
         body: JSON.stringify({ question: question }), //Data yang mau dikirim
       });
 
       // Handle error ketika response 400/500
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!res.ok) {
+        const errorData = await res.json();
         setError(errorData.error || "Failed to fetch AI response");
         setAnswer("");
         setloadingAI(false);
@@ -75,7 +57,7 @@ export default function Home() {
       }
 
       // Handle Error ketika response 200 tapi data object mengandung error
-      const data = await response.json();
+      const data = await res.json();
       if (data.error != null) {
         setAnswer(data.error);
         setloadingAI(false);
@@ -93,180 +75,37 @@ export default function Home() {
     }
   };
 
-  const getStatusColor = (status) => {
-    if (status === "Closed Won") {
-      return "text-green-500";
-    }
-    if (status === "Closed Lost") {
-      return "text-red-500";
-    }
-    return "";
-  };
-
-  //Currency format
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
-
-  if (error === "Failed to fetch data") {
+  if (error != null) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div className="p-4">
-      <h1>Sales Dashboard</h1>
-
-      <section>
-        <h2>Sales Representatives</h2>
-        {loading ? (
-          <p>Loading sales representatives...</p>
-        ) : error ? (
-          <div className="text-red-500">Error: {error}</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {salesReps.map((rep) => {
-              return (
-                <div key={rep.id} className="border p-4 rounded-lg shadow">
-                  <img
-                    className="rounded-full w-24 h-24 mx-auto mb-4"
-                    src="https://mighty.tools/mockmind-api/content/human/124.jpg"
-                  />
-                  <h3 className="text-center">{rep.name}</h3>
-                  <p className="text-center">{rep.role}</p>
-                  <div className="flex justify-end">
-                    <Button
-                      onPress={() => {
-                        handleShowDetail(rep);
-                        onOpen();
-                      }}
-                      variant="ghost"
-                      color="primary"
-                      size="sm"
-                      radius="full"
-                    >
-                      Details
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </section>
-
-      {selectedSalesReps && (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1">
-                  Details for {selectedSalesReps.name}
-                </ModalHeader>
-                <ModalBody>
-                  <h3>
-                    <strong>Full Name: </strong>
-                    {selectedSalesReps.name}
-                  </h3>
-                  <p>
-                    <strong>Role: </strong>
-                    {selectedSalesReps.role}
-                  </p>
-                  <p>
-                    <strong>Region: </strong>
-                    {selectedSalesReps.region}
-                  </p>
-                  <h4>Skills:</h4>
-                  <ol className="list-disc px-4">
-                    {selectedSalesReps.skills.map((skill, index) => {
-                      return <li key={index}>{skill}</li>;
-                    })}
-                  </ol>
-                  <h4>Deals: </h4>
-                  {selectedSalesReps.deals &&
-                  selectedSalesReps.deals.length > 0 ? (
-                    <ol className="list-disc px-4">
-                      {selectedSalesReps.deals.map((deal, index) => {
-                        const formattedValue = currencyFormatter.format(
-                          deal.value
-                        );
-                        return (
-                          <li key={index}>
-                            <div>
-                              <strong>Client: </strong>
-                              {deal.client}, <strong>Value: </strong>{" "}
-                              {formattedValue}
-                            </div>
-                            <div>
-                              <strong>Status: </strong>
-                              <span className={getStatusColor(deal.status)}>
-                                {deal.status}
-                              </span>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  ) : (
-                    <p>No deals yet.</p>
-                  )}
-                  <h4>Clients: </h4>
-                  {selectedSalesReps.clients &&
-                  selectedSalesReps.clients.length > 0 ? (
-                    <ol className="list-disc px-4">
-                      {selectedSalesReps.clients.map((client, index) => {
-                        return (
-                          <li key={index}>
-                            <strong>Client: </strong>
-                            {client.name}, <strong>Industry: </strong>
-                            {client.industry}
-                            <div>
-                              <strong>Contact: </strong>
-                              {client.contact}
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  ) : (
-                    <p>No clients assigned yet.</p>
-                  )}
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      )}
-
-      <section>
-        <h2>Ask a Question (AI Endpoint)</h2>
-        <div>
-          <Input
-            type="text"
-            placeholder="Enter your question..."
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          ></Input>
-          <Button isLoading={loadingAI} onPress={handleAskQuestion}>
-            Ask
-          </Button>
-        </div>
-        {answer && (
-          <div>
-            <strong>AI Response:</strong> {answer}
-          </div>
-        )}
-      </section>
+    <div>
+      <Headers />
+      <div className="p-4">
+        <section>
+          {loading ? (
+            <div className="w-fit grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 place-items-center">
+              <SalesCardSkeleton salesReps={salesReps} />
+            </div>
+          ) : error ? (
+            <div className="text-red-500">Error: {error}</div>
+          ) : (
+            <div className="w-fit grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <SalesCard salesReps={salesReps} />
+            </div>
+          )}
+        </section>
+        <section>
+          <DrawerAI
+            answer={answer}
+            question={question}
+            loadingAI={loadingAI}
+            handleAskQuestion={handleAskQuestion}
+            setQuestion={setQuestion}
+          />
+        </section>
+      </div>
     </div>
   );
 }
