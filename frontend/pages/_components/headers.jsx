@@ -7,6 +7,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  addToast,
 } from "@heroui/react";
 import { ButtonAI } from "./button-ai";
 import { useState } from "react";
@@ -34,7 +35,7 @@ export const Headers = ({
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive>
-          <Link aria-current="page" href="#">
+          <Link aria-current="page" href="/">
             Sales Dashboard
           </Link>
         </NavbarItem>
@@ -59,7 +60,7 @@ export const Headers = ({
                 index === 2
                   ? "primary"
                   : index === menuItems.length - 1
-                  ? "danger"
+                  ? "primary"
                   : "foreground"
               }
               href="/"
