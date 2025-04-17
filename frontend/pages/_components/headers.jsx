@@ -4,12 +4,30 @@ import {
   NavbarContent,
   NavbarItem,
   Link,
-  Button,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
 } from "@heroui/react";
+import { ButtonAI } from "./button-ai";
+import { useState } from "react";
 
-export const Headers = () => {
+export const Headers = ({
+  answer,
+  question,
+  loadingAI,
+  handleAskQuestion,
+  setQuestion,
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuItems = ["Sales Dashboard"];
+
   return (
-    <Navbar shouldHideOnScroll>
+    <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen}>
+      <NavbarMenuToggle
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className="sm:hidden"
+      />
       <NavbarBrand>
         <div>Logo</div>
         <p className="font-bold text-inherit">XYZcorp.</p>
@@ -23,11 +41,35 @@ export const Headers = () => {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button as={Link} color="primary" variant="flat">
-            Sign In
-          </Button>
+          <ButtonAI
+            answer={answer}
+            question={question}
+            loadingAI={loadingAI}
+            handleAskQuestion={handleAskQuestion}
+            setQuestion={setQuestion}
+          />
         </NavbarItem>
       </NavbarContent>
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <Link
+              className="w-full"
+              color={
+                index === 2
+                  ? "primary"
+                  : index === menuItems.length - 1
+                  ? "danger"
+                  : "foreground"
+              }
+              href="/"
+              size="lg"
+            >
+              {item}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 };
