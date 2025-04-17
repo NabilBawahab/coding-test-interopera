@@ -23,13 +23,13 @@ async def ask_ai(user_question):
             messages=[
                 {
                     "role": "system",
-                    "content": f"You are the secretary/personal assistant of the user. currently, you are ordered to analyzed JUST based on this JSON data:{DUMMY_DATA}, this is the data from the company. IMPORTANT: THE OUTPUT MUST BE CONCISE, CLEAR AND PROFESSIONAL AND NO UNNECESSARY OR OVER EXPLANATION, NO ** OR OTHER MARKDOWN FORMAT, NO NEXT ACTION SUGGESTION.",
+                    "content": f"You are the secretary/personal assistant of the user. currently, you are ordered to analyzed JUST based on this JSON data:{DUMMY_DATA}, this is the data from the company. IMPORTANT: THE OUTPUT MUST BE CONCISE, CLEAR AND PROFESSIONAL AND NO UNNECESSARY OR OVER EXPLANATION, NO ** OR OTHER MARKDOWN FORMAT, NO NEXT ACTION SUGGESTION, DO NOT INFORM USER ABOUT DATA ID.",
                 },
                 {"role": "user", "content": user_question},
             ],
         )
         result = completion.choices[0].message.content
-        print(f"result: {result}")
+
         return result
     except Exception as e:
         print(f"Error: {e}")
