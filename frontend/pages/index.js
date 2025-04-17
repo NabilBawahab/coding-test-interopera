@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { SalesCard } from "./_components/sales-card";
 import { SalesCardSkeleton } from "./_components/sales-card-skeleton";
 import { Headers } from "./_components/headers";
-import { DrawerAI } from "./_components/drawer-ai-answer";
+import { DrawerAI } from "./_components/button-ai";
 
 export default function Home() {
   const [salesReps, setSalesReps] = useState([]);
@@ -13,10 +13,10 @@ export default function Home() {
   const [loadingAI, setloadingAI] = useState(false);
 
   useEffect(() => {
-    // setTimeout(() => {
     async function fetchSalesReps() {
       setLoading(true);
       setError(null);
+
       try {
         const res = await fetch("http://localhost:8000/api/sales-reps");
 
@@ -30,12 +30,12 @@ export default function Home() {
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch sales representatives data:", error);
+
         setError("Failed to fetch data");
         setLoading(false);
       }
     }
     fetchSalesReps();
-    // }, 2000);
   }, []);
 
   const handleAskQuestion = async () => {
@@ -50,6 +50,7 @@ export default function Home() {
       // Handle error ketika response 400/500
       if (!res.ok) {
         const errorData = await res.json();
+
         setError(errorData.error || "Failed to fetch AI response");
         setAnswer("");
         setloadingAI(false);
@@ -81,7 +82,13 @@ export default function Home() {
 
   return (
     <div>
-      <Headers />
+      <Headers
+        answer={answer}
+        question={question}
+        loadingAI={loadingAI}
+        handleAskQuestion={handleAskQuestion}
+        setQuestion={setQuestion}
+      />
       <div className="p-4">
         <section>
           {loading ? (
@@ -96,15 +103,7 @@ export default function Home() {
             </div>
           )}
         </section>
-        <section>
-          <DrawerAI
-            answer={answer}
-            question={question}
-            loadingAI={loadingAI}
-            handleAskQuestion={handleAskQuestion}
-            setQuestion={setQuestion}
-          />
-        </section>
+        <section></section>
       </div>
     </div>
   );

@@ -11,9 +11,9 @@ import {
   Textarea,
 } from "@heroui/react";
 import { TypedJs } from "./typed";
-import { SendHorizontal } from "lucide-react";
+import { Orbit, SendHorizontal } from "lucide-react";
 
-export const DrawerAI = ({
+export const ButtonAI = ({
   answer,
   question,
   loadingAI,
@@ -25,7 +25,10 @@ export const DrawerAI = ({
   return (
     <>
       <div>
-        <Button onPress={onOpen}>Ask AI</Button>
+        <Button variant="faded" onPress={onOpen}>
+          <Orbit size={20} />
+          <p className="font-bold text-xs">Ask AI</p>
+        </Button>
       </div>
       <Drawer isOpen={isOpen} placement={"bottom"} onOpenChange={onOpenChange}>
         <DrawerContent>

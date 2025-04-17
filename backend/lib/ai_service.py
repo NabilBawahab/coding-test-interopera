@@ -19,11 +19,11 @@ with open("dummyData.json", "r") as f:
 async def ask_ai(user_question):
     try:
         completion = client.chat.completions.create(
-            model="deepseek/deepseek-chat-v3-0324:free",
+            model="mistralai/mistral-small-3.1-24b-instruct:free",
             messages=[
                 {
                     "role": "system",
-                    "content": f"You are the secretary/personal assistant of the user. currently, you are ordered to analyzed based on this data:{DUMMY_DATA}, this is the data from the company. IMPORTANT: THE OUTPUT MUST BE CONCISE, CLEAR AND PROFESSIONAL AND NO UNNECESSARY OR OVER EXPLANATION.",
+                    "content": f"You are the secretary/personal assistant of the user. currently, you are ordered to analyzed JUST based on this JSON data:{DUMMY_DATA}, this is the data from the company. IMPORTANT: THE OUTPUT MUST BE CONCISE, CLEAR AND PROFESSIONAL AND NO UNNECESSARY OR OVER EXPLANATION, NO ** OR OTHER MARKDOWN FORMAT, NO NEXT ACTION SUGGESTION.",
                 },
                 {"role": "user", "content": user_question},
             ],
