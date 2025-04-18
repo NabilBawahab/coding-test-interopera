@@ -32,7 +32,6 @@ This application displays sales representative data fetched from a FastAPI backe
   - React DOM (v18.2.0)
   - Tailwind CSS (v3.4.17)
   - HERO UI (@heroui/react v2.7.6)
-  - Framer Motion (v12.6.3)
   - Lucide React (v0.488.0)
   - Typed.js (v2.1.0)
 - **Backend:**
@@ -58,8 +57,8 @@ This application displays sales representative data fetched from a FastAPI backe
 1.  Clone the repository:
 
     ```bash
-    git clone <this-repository-url>
-    cd <this-repository-name>
+    git clone https://github.com/NabilBawahab/coding-test-interopera.git
+    cd coding-test-interopera
     ```
 
 ### Backend Setup
@@ -89,7 +88,10 @@ This application displays sales representative data fetched from a FastAPI backe
     ```bash
     # Create a .env file in the backend directory
     # Add your OpenRouter.ai API key:
-    # OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY_HERE
+    # You can get your OpenRouter API Key in OpenRouter.ai
+    OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY_HERE
+    # Add your AI Model
+    AI_MODEL=YOUR_AI_MODEL_HERE
     # example: .env.example
     ```
 
@@ -102,7 +104,7 @@ This application displays sales representative data fetched from a FastAPI backe
 6.  Confirm the API works by visiting:
 
     ```
-    http://localhost:8000/docs
+    http://localhost:8000/api/ping
     ```
 
 ### Frontend Setup
