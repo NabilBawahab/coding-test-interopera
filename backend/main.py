@@ -12,7 +12,7 @@ app = FastAPI()  # FastAPI instance
 # Misal: ["https://frontend-domain.com"]
 # Untuk development bisa pakai ["*"]
 app.add_middleware(
-    CORSMiddleware,
+    CORSMiddleware,  # cross origin resource sharing
     allow_origins=["*"],  # ganti * jadi domain frontend kamu kalau production
     allow_credentials=True,
     allow_methods=["*"],
@@ -32,12 +32,12 @@ def get_data():
     return DUMMY_DATA
 
 
-@app.get("/api/tes")
+@app.get("/api/ping")
 def test_endpoint():
     """
     Returns dummy data (e.g., list of users).
     """
-    return "Hello, this is a test endpoint!"
+    return "Hello, your backend is working!"
 
 
 @app.post("/api/ai")
@@ -49,13 +49,15 @@ async def ai_endpoint(request: Request):
     body = await request.json()
     user_question = body.get("question")  # get question from frontend
 
+    # Validate input return error if empty
     if not user_question:
         return {"error": "No question provided"}
 
     ai_response = await ask_ai(user_question)
 
-    # Placeholder logic: echo the question or generate a simple response
-    # Replace with real AI logic as desired (e.g., call to an LLM).
+    if ai_response.startswith("Error"):
+        return {"error": ai_response}
+
     return {"answer": ai_response}
 
 

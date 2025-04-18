@@ -1,167 +1,145 @@
-# Coding Challenge: Sales Dashboard with Next.js & FastAPI
+# Sales Dashboard Application
+
+A full-stack application built with Next.js and FastAPI to display sales representative data.
 
 ## Overview
 
-Your task is to build a simple, full-stack application featuring:
+This application displays sales representative data fetched from a FastAPI backend. It allows users to view a list of sales representatives and their details, including roles, regions, skills, deals, and clients. It also includes an AI feature powered by the OpenAI SDK through OpenRouter.ai, using the Mistral Small 3.1 24B model.
 
-1. **Next.js** as the frontend framework.
-2. **FastAPI** as the backend API layer.
-3. **Dummy JSON Data** (provided) with sales-related information.
+## Features
 
-You will parse the provided **`dummyData.json`** and render its nested structures in a user-friendly interface. Optionally, you may include a simple AI feature as a bonus.
+- **Data Rendering:**
+  - Displays a list of sales representatives in a card format.
+  - Shows detailed information for each representative in a modal when the card is clicked.
+  - Handles nested JSON structures (e.g., displays deals and clients within the modal).
+- **UI/UX:**
+  - Clean and responsive interface built with Next.js and Tailwind CSS.
+  - Modal component from HERO UI is used to display details.
+  - Displays a loading state while fetching data and an error message with toast if data fetching fails.
+- **Backend API:**
+  - FastAPI backend serves data from `dummyData.json` via a RESTful API.
+  - CORS is enabled to allow cross-origin requests.
+- **AI Feature:**
+  - Allows users to input a question regarding data from `dummyData.json`.
+  - Uses the OpenAI SDK and OpenRouter.ai to query the Mistral Small 3.1 24B model.
+  - Displays the AI-generated response to the user.
 
----
+## Technologies Used
 
-## Requirements
-
-1. **Data Rendering (Required)**
-
-   - The backend should serve the data from `dummyData.json` via a REST endpoint (e.g., `/api/sales-reps`).
-   - The frontend must fetch this data asynchronously and display it in a meaningful way (e.g., a list of sales representatives, their deals, skills, etc.).
-   - Demonstrate handling of nested JSON structures. For example, you might display each sales rep’s deals, status, and client details.
-
-2. **UI/UX (Required)**
-
-   - Use **Next.js** to implement at least one page that renders the fetched data.
-   - Provide a basic, intuitive UI for viewing the sales reps’ information (e.g., deals, clients).
-   - Show a loading state while data is being fetched, and handle potential errors gracefully.
-
-3. **Backend API (Required)**
-
-   - Use **FastAPI** to create an endpoint that returns the JSON data.
-   - Implement CORS if needed, so the Next.js app can successfully request data from the FastAPI server.
-   - Ensure your API is well-structured and documented (e.g., make use of FastAPI’s automatic docs or docstrings).
-
-4. **Bonus: AI Feature (Optional)**
-   - Add an endpoint (e.g., `/api/ai`) that accepts user input (e.g., a question) and returns a generated or placeholder response.
-   - Integrate this into the frontend with a simple form or input field where the user can type a question and view the AI’s response.
-   - The AI logic can be **mocked** or **rule-based** if you do not wish to integrate an actual AI service. If you prefer, you may call any AI API you have access to (such as OpenAI, etc.).
-
----
-
-## Using Free LLM APIs
-
-Various Large Language Model (LLM) providers offer free or trial APIs. Here are some examples:
-
-- **Google Gemini API**  
-  Google provides a free tier for the Gemini model API with certain usage limits. You can generate an API key and refer to the official documentation for details.
-
-- **Meta’s Llama 2**  
-  Meta has open-sourced the Llama 2 model, which can be used for both commercial and research purposes at no cost. You can apply for access and download the model from their official website.
-
-- **Upstage’s Solar**  
-  Upstage provides a free API trial for its Solar LLM, showcasing its powerful features. Refer to their official documentation or blog for more information.
-
-Additionally, IBM, Study space, “Stibee,” and others may offer free or trial-based LLM APIs.
-
-> **LangChain**  
-> LangChain is a framework that supports integrating multiple LLMs in a unified way. You can check LangChain’s list of integrations to see which models are supported and choose the one that suits your project.
-
-Using these free or trial options can help you add an AI chatbot or similar functionality to your project without significant costs.
-
----
-
-## Submission Instructions (Fork)
-
-1. **Fork This Repository**
-
-   - In the top-right corner of this repo page, click on the “Fork” button to create your own copy of the project under your GitHub account.
-
-2. **Clone Your Fork**
-   - After forking, clone your forked repository to your local machine:
-     ```bash
-     git clone https://github.com/<your-username>/<repo-name>.git
-     ```
-3. **Implement Your Solution**
-   - Work on your solution locally (both frontend and backend as described below).
-   - Commit your changes in a clean, organized manner.
-
-- Then, go to your forked repository on GitHub and Provide a link to your forked repository and emailing it to us
-- Provide a clear description of what you’ve implemented or any notable design choices.
-
----
-
-## Deliverables
-
-- **Forked Repository**: Contains all changes, with commits reflecting your development process.
-
----
-
-## Evaluation Criteria
-
-1. **Code Quality & Organization**
-
-   - Readability, maintainability, and modularity.
-   - Clear separation of concerns between frontend and backend.
-
-2. **Data Handling**
-
-   - Ability to fetch, parse, and display nested data structures.
-   - Proper use of asynchronous operations and error handling.
-
-3. **UI/UX**
-
-   - Clean, intuitive interface.
-   - Demonstration of loading states and helpful user feedback.
-
-4. **AI Integration (Bonus)**
-
-   - Creativity and correctness of the AI feature.
-   - Proper request/response handling on both frontend and backend.
-
-5. **Documentation**
-   - Clarity in the instructions to set up and run the project.
-   - Brief explanation of design choices and potential improvements.
-
----
+- **Frontend:**
+  - Next.js (v15.3.0)
+  - React (v18.2.0)
+  - React DOM (v18.2.0)
+  - Tailwind CSS (v3.4.17)
+  - HERO UI (@heroui/react v2.7.6)
+  - Lucide React (v0.488.0)
+  - Typed.js (v2.1.0)
+- **Backend:**
+  - FastAPI (0.115.12)
+  - Python (3.12.3)
+- **Data:**
+  - JSON (`dummyData.json`)
+- **AI:**
+  - OpenAI SDK (via OpenRouter.ai)
+  - Mistral Small 3.1 24B (model)
 
 ## Getting Started
 
-1. **Clone or Download** this repository (or fork it, as described above).
-2. **Backend Setup**
+### Prerequisites
 
-   - Navigate to the `backend` directory.
-   - Create a virtual environment (optional but recommended).
-   - Install dependencies:
-     ```bash
-     pip install -r requirements.txt
-     ```
-   - Run the server:
-     ```bash
-     uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-     ```
-   - Confirm the API works by visiting `http://localhost:8000/docs`.
+- Node.js (v18.x.x)
+- npm (or yarn/pnpm)
+- Python (3.12.3)
+- pip
 
-3. **Frontend Setup**
+### Installation
 
-   - Navigate to the `frontend` directory.
-   - Install dependencies:
-     ```bash
-     npm install
-     ```
-   - Start the development server:
-     ```bash
-     npm run dev
-     ```
-   - Open `http://localhost:3000` to view your Next.js app.
+1.  Clone the repository:
 
-4. **Data**
+    ```bash
+    git clone https://github.com/NabilBawahab/coding-test-interopera.git
+    cd coding-test-interopera
+    ```
 
-   - The file `dummyData.json` is located in the `backend` directory (or wherever you place it).
-   - Adjust your API endpoint and frontend calls if you use different paths or filenames.
+### Backend Setup
 
-5. **AI Feature (If Implemented)**
+1.  Navigate to the `backend` directory:
 
-   - Add a POST endpoint to handle AI requests, for example `/api/ai`.
-   - In the frontend, create a simple form to collect user questions and display the returned answer.
-   - Feel free to use any **free or trial LLM API** mentioned above or implement a rule-based approach.
+    ```bash
+    cd backend
+    ```
 
-6. **Tips for Completion**
-   - **Start Small**: Fetch the data, display it, then expand to more complex UI or AI functionality.
-   - **Testing**: You may add unit or integration tests if time permits.
-   - **UI Libraries**: Feel free to use any UI library or styling approach (Tailwind, CSS modules, etc.) if desired.
-   - **Extensions**: You can incorporate charts, filters, or sorting to demonstrate extra skills.
+2.  Create a virtual environment (optional but recommended):
 
----
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On macOS/Linux
+    venv\Scripts\activate  # On Windows
+    ```
 
-**Good luck, and have fun building your Sales Dashboard!**
+3.  Install dependencies:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  Set up environment variables:
+
+    ```bash
+    # Create a .env file in the backend directory
+    # Add your OpenRouter.ai API key:
+    # You can get your OpenRouter API Key in OpenRouter.ai
+    OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY_HERE
+    # Add your AI Model
+    AI_MODEL=YOUR_AI_MODEL_HERE
+    # example: .env.example
+    ```
+
+5.  Run the server:
+
+    ```bash
+    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ```
+
+6.  Confirm the API works by visiting:
+
+    ```
+    http://localhost:8000/api/ping
+    ```
+
+### Frontend Setup
+
+1.  Navigate to the `frontend` directory:
+
+    ```bash
+    cd ../frontend
+    ```
+
+2.  Install dependencies:
+
+    ```bash
+    npm install  # Atau yarn install atau pnpm install
+    ```
+
+3.  Start the development server:
+
+    ```bash
+    npm run dev  # Atau yarn dev atau pnpm dev
+    ```
+
+4.  Open the application in your browser:
+
+    ```
+    http://localhost:3000
+    ```
+
+## API Endpoints
+
+- `GET /api/sales-reps`: Returns the sales representative data from `dummyData.json`.
+- `POST /api/ai`: Accepts a user question and returns an AI-generated response from the Mistral model via OpenRouter.ai.
+
+## AI Feature
+
+The AI feature allows users to ask questions and receive responses generated by the Mistral Small 3.1 24B model. The application uses the OpenAI SDK to interact with the OpenRouter.ai API, which provides access to various Large Language Models (LLMs).
+
+**Important:** You will need to set up your OpenRouter.ai API key as an environment variable (see the Backend Setup section).

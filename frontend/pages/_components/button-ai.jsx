@@ -7,7 +7,6 @@ import {
   DrawerFooter,
   Button,
   useDisclosure,
-  Input,
   Textarea,
 } from "@heroui/react";
 import { TypedJs } from "./typed";
