@@ -3,6 +3,7 @@ import { SalesCard } from "./_components/sales-card";
 import { SalesCardSkeleton } from "./_components/sales-card-skeleton";
 import { Headers } from "./_components/headers";
 import { Button, addToast, cn } from "@heroui/react";
+import { getAIResponse, getSalesReps } from "../apifetch/api";
 
 export default function Home() {
   const [salesReps, setSalesReps] = useState([]);
@@ -18,13 +19,7 @@ export default function Home() {
       setError(null);
 
       try {
-        const res = await fetch("http://localhost:8000/api/sales-reps");
-
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const data = await res.json();
+        const data = await getSalesReps();
 
         setSalesReps(data.salesReps || []);
         setLoading(false);
@@ -42,40 +37,15 @@ export default function Home() {
     setloadingAI(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, //tipe konten application/json kalau xml application/xml dll (metadata)
-        body: JSON.stringify({ question: question }), //Data yang mau dikirim
-      });
+      const answer = await getAIResponse(question);
 
-      // Handle error ketika response 400/500
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.log("errorData", errorData);
-
-        setError(errorData.error || "Failed to fetch AI response");
-        setAnswer("");
-        setloadingAI(false);
-        return;
-      }
-
-      // Handle Error ketika response 200 tapi data object mengandung error
-      const data = await res.json();
-      if (data.error != null) {
-        console.error("Error in AI response:", data.error);
-
-        setError(data.error);
-        setloadingAI(false);
-        return;
-      }
-
-      setAnswer(data.answer);
+      setAnswer(answer);
       setError(null);
       setloadingAI(false);
     } catch (error) {
       console.error("Error in AI request:", error);
 
-      setError("Failed to fetch AI response, please try again later");
+      setError(`Error: ${error.message}`);
       setAnswer("");
       setloadingAI(false);
     }
