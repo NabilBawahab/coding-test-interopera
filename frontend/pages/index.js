@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { SalesCard } from "./_components/sales-card";
-import { SalesCardSkeleton } from "./_components/sales-card-skeleton";
-import { Headers } from "./_components/headers";
+import { SalesCard } from "../_components/sales-card";
+import { SalesCardSkeleton } from "../_components/sales-card-skeleton";
+import { Headers } from "../_components/headers";
 import { Button, addToast, cn } from "@heroui/react";
 import { getAIResponse, getSalesReps } from "../apifetch/api";
 
@@ -19,6 +19,7 @@ export default function Home() {
       setError(null);
 
       try {
+        // get sales reps data
         const data = await getSalesReps();
 
         setSalesReps(data.salesReps || []);
@@ -37,6 +38,7 @@ export default function Home() {
     setloadingAI(true);
 
     try {
+      // Post to AI API and return the AI response
       const answer = await getAIResponse(question);
 
       setAnswer(answer);
@@ -73,7 +75,7 @@ export default function Home() {
         // reset error state
         setError(null);
       }, 3000);
-      // Clear the timeout if the component unmounts before it executes, or if the error changes
+      // Clear the timeout if the component unmounts before it executes, or if the error changes, preventing memory leaks
       return () => clearTimeout(timeout);
     }
   }, [error]);

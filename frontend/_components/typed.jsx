@@ -12,7 +12,7 @@ export const TypedJs = ({ answer }) => {
     });
 
     return () => {
-      // Destroy Typed instance during cleanup to stop animation
+      // Destroy Typed instance during cleanup to stop animation, prevents memory leaks
       typed.destroy();
     };
   }, [answer]);

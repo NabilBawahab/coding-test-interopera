@@ -7,13 +7,13 @@ from lib.ai_service import ask_ai
 
 app = FastAPI()  # FastAPI instance
 
-# CORS config agar frontend bisa akses backend
-# Ganti "*" dengan domain frontend kamu kalau production
-# Misal: ["https://frontend-domain.com"]
-# Untuk development bisa pakai ["*"]
+# CORS config (cross origin resource sharing)
+# switch "*" with frontend domain if in production
+# Example: ["https://frontend-domain.com"]
+# For development we can use ["*"]
 app.add_middleware(
-    CORSMiddleware,  # cross origin resource sharing
-    allow_origins=["*"],  # ganti * jadi domain frontend kamu kalau production
+    CORSMiddleware,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,6 +32,7 @@ def get_data():
     return DUMMY_DATA
 
 
+# API Test
 @app.get("/api/ping")
 def test_endpoint():
     """
@@ -42,10 +43,7 @@ def test_endpoint():
 
 @app.post("/api/ai")
 async def ai_endpoint(request: Request):
-    """
-    Accepts a user question and returns a placeholder AI response.
-    (Optionally integrate a real AI model or external service here.)
-    """
+
     body = await request.json()
     user_question = body.get("question")  # get question from frontend
 
@@ -55,6 +53,7 @@ async def ai_endpoint(request: Request):
 
     ai_response = await ask_ai(user_question)
 
+    # if AI Response starts with ("error":) not ("answer":)
     if ai_response.startswith("Error"):
         return {"error": ai_response}
 

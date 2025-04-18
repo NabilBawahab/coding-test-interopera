@@ -69,7 +69,7 @@ This application displays sales representative data fetched from a FastAPI backe
     cd backend
     ```
 
-2.  Create a virtual environment (optional but recommended):
+2.  Create a virtual environment:
 
     ```bash
     python3 -m venv venv
@@ -92,7 +92,7 @@ This application displays sales representative data fetched from a FastAPI backe
     OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY_HERE
     # Add your AI Model
     AI_MODEL=YOUR_AI_MODEL_HERE
-    # example: .env.example
+    # for example, you can check this file in this repository: .env.example
     ```
 
 5.  Run the server:
