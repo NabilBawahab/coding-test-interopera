@@ -9,7 +9,7 @@ load_dotenv()
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=getenv("OPENAI_API_KEY"),
+    api_key=getenv("OPENROUTER_API_KEY"),
 )
 
 with open("dummyData.json", "r") as f:
@@ -19,7 +19,7 @@ with open("dummyData.json", "r") as f:
 async def ask_ai(user_question):
     try:
         completion = client.chat.completions.create(
-            model="mistralai/mistral-small-3.1-24b-instruct:free",
+            model=getenv("AI_MODEL"),
             messages=[
                 {
                     "role": "system",

@@ -113,9 +113,9 @@ export default function Home() {
       <Headers
         answer={answer}
         question={question}
+        setQuestion={setQuestion}
         loadingAI={loadingAI}
         handleAskQuestion={handleAskQuestion}
-        setQuestion={setQuestion}
       />
       <div className="p-4">
         <section>
@@ -129,7 +129,6 @@ export default function Home() {
             </div>
           )}
         </section>
-        <section></section>
       </div>
     </div>
   );
