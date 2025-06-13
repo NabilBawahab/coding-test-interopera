@@ -1,5 +1,7 @@
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export const getSalesReps = async () => {
-  const res = await fetch("http://localhost:8000/api/sales-reps");
+  const res = await fetch(`${BASE_URL}/api/sales-reps`);
 
   // Handle error if response 400/500
   if (!res.ok) {
@@ -12,7 +14,7 @@ export const getSalesReps = async () => {
 };
 
 export const getAIResponse = async (question) => {
-  const res = await fetch("http://localhost:8000/api/ai", {
+  const res = await fetch(`${BASE_URL}/api/ai`, {
     method: "POST",
     headers: { "Content-Type": "application/json" }, // Content type application/json
     body: JSON.stringify({ question: question }), // sending data
